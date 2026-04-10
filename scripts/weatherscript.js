@@ -13,7 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       🎨 ICON MAPPING
+       🎨 ICON MAPPING (FIXED)
+       - Now supports "Ligeras precipitaciones"
     ===================================================== */
     function getWeatherIcon(text = "") {
         const t = text.toLowerCase();
@@ -24,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (t.includes("parcial"))
             return "fa-cloud-sun";
 
+        /* ☁ CLOUD / OVERCAST */
         if (
             t.includes("nube") ||
             t.includes("nublado") ||
@@ -32,15 +34,25 @@ document.addEventListener("DOMContentLoaded", () => {
             t.includes("cloud")
         ) return "fa-cloud";
 
-        if (t.includes("lluvia") || t.includes("llovizna") || t.includes("rain"))
-            return "fa-cloud-rain";
+        /* 🌧 RAIN (FIXED HERE) */
+        if (
+            t.includes("lluvia") ||
+            t.includes("llovizna") ||
+            t.includes("precipitaciones") ||   // ✅ FIX
+            t.includes("light rain") ||        // ✅ FIX
+            t.includes("drizzle") ||
+            t.includes("rain")
+        ) return "fa-cloud-rain";
 
+        /* ⛈ STORM */
         if (t.includes("tormenta") || t.includes("storm"))
             return "fa-bolt";
 
+        /* ❄ SNOW */
         if (t.includes("nieve"))
             return "fa-snowflake";
 
+        /* 🌫 FOG */
         if (t.includes("niebla") || t.includes("neblina"))
             return "fa-smog";
 
@@ -49,37 +61,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       🌦 WEATHER THEME SYSTEM (FIXED + EXPANDED)
-       - FIX: handles Argentina / wttr.in variations
+       🌦 WEATHER THEME SYSTEM
     ===================================================== */
     function getWeatherTheme(text = "") {
         const t = text.toLowerCase();
 
-        /* 🌧 Rain */
-        if (
-            t.includes("lluvia") ||
-            t.includes("rain") ||
-            t.includes("llovizna")
-        ) return "theme-rain";
+        if (t.includes("lluvia") || t.includes("rain") || t.includes("llovizna") || t.includes("precipitaciones"))
+            return "theme-rain";
 
-        /* ⛈ Storm */
-        if (
-            t.includes("tormenta") ||
-            t.includes("storm") ||
-            t.includes("thunder")
-        ) return "theme-storm";
+        if (t.includes("tormenta") || t.includes("storm") || t.includes("thunder"))
+            return "theme-storm";
 
-        /* ☁ Cloud */
         if (
             t.includes("nube") ||
             t.includes("nublado") ||
             t.includes("cubierto") ||
             t.includes("overcast") ||
-            t.includes("cloud") ||
-            t.includes("parcial")
+            t.includes("cloud")
         ) return "theme-cloud";
 
-        /* ☀ SUNNY (FIXED — THIS WAS YOUR BUG) */
         if (
             t.includes("sol") ||
             t.includes("despejado") ||
@@ -88,7 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
             t.includes("sunny")
         ) return "theme-sunny";
 
-        /* fallback */
         return "theme-cloud";
     }
 
@@ -206,9 +205,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const weatherText = current.weatherDesc?.[0]?.value || "";
 
-            /* =================================================
-               🎨 APPLY THEME (FIXED)
-            ================================================= */
             const theme = getWeatherTheme(weatherText);
 
             document.querySelectorAll(
@@ -233,10 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             console.error("Weather error:", error);
 
-            DOM.current.innerHTML = `
-                <p>❌ Error al cargar el clima</p>
-            `;
-
+            DOM.current.innerHTML = `<p>❌ Error al cargar el clima</p>`;
             DOM.details.innerHTML = "";
             DOM.forecast.innerHTML = "";
         }
@@ -264,3 +257,35 @@ document.addEventListener("DOMContentLoaded", () => {
     loadWeather("Madrid");
 
 });
+
+// sw.js
+const CACHE_NAME = "clima-cache-v1";
+
+const ASSETS = [
+    "/",
+    "/index.html",
+    "/styles/weatherstyle.css",
+    "/scripts/weatherscript.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css",
+    "https://unpkg.com/7.css"
+];
+
+self.addEventListener("install", (event) => {
+    event.waitUntil(
+        caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
+    );
+});
+
+self.addEventListener("fetch", (event) => {
+    event.respondWith(
+        caches.match(event.request).then((cached) => {
+            return cached || fetch(event.request);
+        })
+    );
+});
+
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/sw.js")
+        .then(() => console.log("Service Worker registered"))
+        .catch(err => console.error("SW error:", err));
+}
