@@ -326,118 +326,225 @@ input {
 }
 
 /* =========================================================
-   📱 BIG PHONE MODE (PWA FULLSCREEN EXPERIENCE)
-   - Designed for mobile-first weather app feel
+   📱 FORCE MOBILE OVERRIDE (GUARANTEED TO APPLY)
 ========================================================= */
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
 
     /* =========================
-       🔠 GLOBAL SCALE UP
+       🔥 GLOBAL OVERRIDE SCALE
     ========================= */
     body {
-        font-size: 20px;
-        line-height: 1.7;
+        font-size: 20px !important;
+        line-height: 1.7 !important;
     }
 
-    /* =========================
-       🪟 WINDOWS BECOME APP PANELS
-    ========================= */
     .window-body {
-        font-size: 1.25rem;
-        padding: 16px 18px;
-    }
-
-    .title-bar-text {
-        font-size: 1.1rem;
+        font-size: 1.2rem !important;
+        padding: 12px 14px !important;
     }
 
     /* =========================
-       🧱 LAYOUT BECOMES SINGLE COLUMN
+       🧱 KILL DESKTOP GRID
     ========================= */
     .desktop {
-        grid-template-columns: 1fr;
-        gap: 16px;
-        padding: 12px;
-    }
-
-    .center-group {
-        grid-template-columns: 1fr;
-        gap: 16px;
+        display: flex !important;
+        flex-direction: column !important;
+        grid-template-columns: none !important;
+        gap: 16px !important;
     }
 
     /* =========================
-       🔎 SEARCH (BIG INPUT)
+       🪟 FORCE FULL WIDTH WINDOWS
     ========================= */
-    input, button {
-        font-size: 1.3rem;
-        padding: 16px;
+    .window,
+    .top-window,
+    .window.search,
+    .window.current,
+    .window.details,
+    .window.forecast {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* =========================
+       🔎 SEARCH BIG MODE
+    ========================= */
+    .window.search {
+        min-width: unset !important;
     }
 
     .row {
-        gap: 12px;
+        flex-direction: row !important;
+        gap: 10px !important;
+    }
+
+    input,
+    button {
+        font-size: 1.3rem !important;
+        padding: 14px !important;
     }
 
     /* =========================
-       🌡 CURRENT WEATHER (HERO SECTION)
+       🌡 CURRENT WEATHER (HERO FIX)
     ========================= */
     .window.current .window-body {
-        min-height: 220px;
-        font-size: 1.5rem;
-        gap: 10px;
-    }
-
-    .window.current h2 {
-        font-size: 1.6rem;
+        min-height: 200px !important;
+        font-size: 1.4rem !important;
+        text-align: center !important;
     }
 
     /* =========================
-       📊 DETAILS (READABLE BLOCK)
+       📊 DETAILS (BIGGER + CLEAN)
     ========================= */
     .window.details .window-body {
-        min-height: 200px;
-        font-size: 1.3rem;
-        gap: 10px;
+        min-height: 180px !important;
+        font-size: 1.3rem !important;
+        text-align: center !important;
     }
 
     /* =========================
-       📅 FORECAST = BIG CARDS
+       📅 FORECAST STACK
     ========================= */
     #forecast {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 14px;
+        display: flex !important;
+        flex-direction: column !important;
+        flex-wrap: nowrap !important;
+        gap: 14px !important;
     }
 
     .forecast-card {
-        width: 100%;
-        max-width: none;
-        font-size: 1.2rem;
-        padding: 16px;
-        border-radius: 10px;
+        width: 100% !important;
+        max-width: 100% !important;
+        font-size: 1.2rem !important;
+        padding: 16px !important;
     }
 
     .forecast-card h3 {
-        font-size: 1.3rem;
+        font-size: 1.4rem !important;
     }
 
     /* =========================
-       🏠 TOP HEADER (LESS CRAMPED)
+       🏠 HEADER BIG TEXT
     ========================= */
     .window-body.top h1 {
-        font-size: 1.8rem;
-        white-space: normal;
+        font-size: 2rem !important;
+        white-space: normal !important;
+    }
+}
+
+/* =========================================================
+   📱 VERTICAL PHONE MODE (FULL SCREEN FIX)
+   - Fixes "small content stuck at top" problem
+========================================================= */
+
+@media (max-width: 600px) and (orientation: portrait) {
+
+    /* =========================
+       🧱 TURN PAGE INTO FULL APP SCROLL
+    ========================= */
+    body {
+        font-size: 20px !important;
+    }
+
+    .desktop {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 18px !important;
+        padding: 14px !important;
     }
 
     /* =========================
-       📱 REMOVE “DESKTOP FEEL”
+       🪟 EACH WINDOW BEHAVES LIKE A PANEL
+       (THIS IS THE KEY FIX)
     ========================= */
     .window {
-        border-radius: 10px;
+        width: 100% !important;
+        max-width: 100% !important;
+
+        /* 👇 THIS FIXES "stuck at top + tiny height" */
+        min-height: 40vh !important;
+
+        display: flex;
+        flex-direction: column;
     }
 
-    /* make everything feel touch-native */
-    button {
-        border-radius: 8px;
+    /* =========================
+       🌡 CURRENT WEATHER = HERO SECTION
+    ========================= */
+    .window.current .window-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        font-size: 1.5rem !important;
+        min-height: 45vh !important;
+        text-align: center;
+    }
+
+    /* =========================
+       📊 DETAILS = CENTERED FULL BLOCK
+    ========================= */
+    .window.details .window-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        font-size: 1.3rem !important;
+        min-height: 40vh !important;
+        text-align: center;
+    }
+
+    /* =========================
+       🔎 SEARCH = NOT CRAMPED
+    ========================= */
+    .window.search {
+        min-height: auto !important;
+    }
+
+    .row {
+        flex-direction: row !important;
+    }
+
+    input, button {
+        font-size: 1.3rem !important;
+        padding: 14px !important;
+    }
+
+    /* =========================
+       📅 FORECAST = BIG STACKED CARDS
+    ========================= */
+    #forecast {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px !important;
+    }
+
+    .forecast-card {
+        width: 100% !important;
+        min-height: 25vh !important;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        font-size: 1.2rem !important;
+        padding: 18px !important;
+    }
+
+    /* =========================
+       🏠 HEADER FIX
+    ========================= */
+    .window-body.top {
+        min-height: 30vh !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .window-body.top h1 {
+        font-size: 2rem !important;
     }
 }
