@@ -326,78 +326,118 @@ input {
 }
 
 /* =========================================================
-   📱 MOBILE PWA OPTIMIZATION (PHONE FIRST)
-   - Makes UI larger, more readable, touch-friendly
+   📱 BIG PHONE MODE (PWA FULLSCREEN EXPERIENCE)
+   - Designed for mobile-first weather app feel
 ========================================================= */
 
 @media (max-width: 768px) {
 
-    /* 🔠 Bigger base text for readability */
+    /* =========================
+       🔠 GLOBAL SCALE UP
+    ========================= */
     body {
-        font-size: 18px;
-        line-height: 1.6;
+        font-size: 20px;
+        line-height: 1.7;
     }
 
-    /* 🪟 Windows feel less cramped */
+    /* =========================
+       🪟 WINDOWS BECOME APP PANELS
+    ========================= */
     .window-body {
-        font-size: 1.1rem;
-        padding: 12px 14px;
+        font-size: 1.25rem;
+        padding: 16px 18px;
     }
 
-    /* 🧭 Title bars slightly bigger */
     .title-bar-text {
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
 
-    /* 🧱 Stack layout naturally */
+    /* =========================
+       🧱 LAYOUT BECOMES SINGLE COLUMN
+    ========================= */
     .desktop {
         grid-template-columns: 1fr;
-        gap: 14px;
-        padding: 10px;
-    }
-
-    /* 🔎 Search input bigger + easier to tap */
-    input, button {
-        font-size: 1.1rem;
+        gap: 16px;
         padding: 12px;
     }
 
+    .center-group {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    /* =========================
+       🔎 SEARCH (BIG INPUT)
+    ========================= */
+    input, button {
+        font-size: 1.3rem;
+        padding: 16px;
+    }
+
     .row {
+        gap: 12px;
+    }
+
+    /* =========================
+       🌡 CURRENT WEATHER (HERO SECTION)
+    ========================= */
+    .window.current .window-body {
+        min-height: 220px;
+        font-size: 1.5rem;
         gap: 10px;
     }
 
-    /* 🌡 Current weather bigger + more readable */
-    .window.current .window-body {
-        min-height: 180px;
-        font-size: 1.2rem;
+    .window.current h2 {
+        font-size: 1.6rem;
     }
 
-    /* 📊 Details easier to read on mobile */
+    /* =========================
+       📊 DETAILS (READABLE BLOCK)
+    ========================= */
     .window.details .window-body {
-        min-height: 180px;
-        font-size: 1.15rem;
+        min-height: 200px;
+        font-size: 1.3rem;
+        gap: 10px;
     }
 
-    /* 📅 Forecast becomes vertical scroll-friendly */
+    /* =========================
+       📅 FORECAST = BIG CARDS
+    ========================= */
     #forecast {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
+        gap: 14px;
     }
 
     .forecast-card {
-        width: 90%;
-        max-width: 420px;
-        font-size: 1.05rem;
+        width: 100%;
+        max-width: none;
+        font-size: 1.2rem;
+        padding: 16px;
+        border-radius: 10px;
     }
 
-    /* 🧠 Top header more compact but readable */
+    .forecast-card h3 {
+        font-size: 1.3rem;
+    }
+
+    /* =========================
+       🏠 TOP HEADER (LESS CRAMPED)
+    ========================= */
     .window-body.top h1 {
-        font-size: 1.4rem;
+        font-size: 1.8rem;
         white-space: normal;
     }
 
-    /* 🪟 prevent tiny cramped windows */
-    .center-group {
-        grid-template-columns: 1fr;
+    /* =========================
+       📱 REMOVE “DESKTOP FEEL”
+    ========================= */
+    .window {
+        border-radius: 10px;
+    }
+
+    /* make everything feel touch-native */
+    button {
+        border-radius: 8px;
     }
 }
