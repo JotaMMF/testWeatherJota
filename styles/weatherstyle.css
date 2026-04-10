@@ -1,74 +1,61 @@
-
 /* =========================
-   🌍 GLOBAL STYLES
+   🌍 GLOBAL BASE STYLES
 ========================= */
 body {
-  margin: 0;
-  background: #008080; /* classic desktop teal */
-  font-family: sans-serif;
+    margin: 0;
+    background: #008080;
+    /* classic Windows 7 teal desktop */
+    background: url("../img/materialdic1.jpg") no-repeat center center fixed;
+    background-size: cover;
+    font-family: sans-serif;
 }
 
 
 /* =========================
-   🖥 DESKTOP GRID (RESTORED)
+   🖥 DESKTOP GRID LAYOUT
+   (main window system)
 ========================= */
 .desktop {
-  display: grid;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+    padding: 12px;
+}
 
-  /* real desktop layout */
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-
-  gap: 12px;
-  padding: 12px;
-
-  /* keeps grid centered on large screens */
-  justify-content: center;
+/* full-width grid element */
+.wide {
+    grid-column: 1 / -1;
 }
 
 
 /* =========================
-   🪟 TOP WINDOW (CENTERED ROW)
+   🪟 TOP BAR (CENTERED + SHRINKS TO CONTENT)
 ========================= */
+
+/* center the top window inside full-width row */
 .cell.h {
-  grid-column: 1 / -1;   /* full width row */
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
-/* shrink-to-content top bar */
+/* shrink-to-content window */
 .top-window {
-  display: inline-block;
-  width: fit-content;
-  max-width: 90vw;
+    display: inline-block;
+    width: fit-content;
+    max-width: 90vw;
+    /* prevents overflow on large content */
 }
 
+/* top bar content styling */
 .window-body.top {
-  text-align: center;
-  padding: 16px 20px;
+    text-align: center;
+    padding: 16px 20px;
 }
 
 .window-body.top h1 {
-  margin: 0;
-  font-size: 1.6rem;
-  white-space: nowrap;
-}
-
-
-/* =========================
-   🧱 CENTER THE 3 WINDOWS GROUP
-========================= */
-
-/* this is the key fix */
-.desktop > .cell:not(.h) {
-  grid-column: 1 / -1;     /* make each span full width row */
-  display: flex;
-  justify-content: center;
-}
-
-/* constrain actual window width */
-.desktop > .cell:not(.h) > .window {
-  width: 100%;
-  max-width: 900px;
+    margin: 0;
+    font-size: 1.6rem;
+    white-space: nowrap;
 }
 
 
@@ -76,21 +63,24 @@ body {
    📅 FORECAST GRID
 ========================= */
 #forecast {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
 }
 
+/* individual forecast card */
 .forecast-card {
-  border: 1px solid #c0c0c0;
-  padding: 10px;
-  background: #f8f8f8;
-  box-shadow: inset 1px 1px 0 #ffffff;
+    border: 1px solid #c0c0c0;
+    padding: 10px;
+    background: #f8f8f8;
+
+    /* subtle Windows-like inset feel */
+    box-shadow: inset 1px 1px 0 #ffffff;
 }
 
 .forecast-card h3 {
-  margin: 0 0 8px 0;
-  font-size: 14px;
+    margin: 0 0 8px 0;
+    font-size: 14px;
 }
 
 
@@ -98,8 +88,8 @@ body {
    🪟 WINDOW BODY FIXES
 ========================= */
 .window-body {
-  min-height: 120px;
-  box-sizing: border-box;
+    min-height: 120px;
+    box-sizing: border-box;
 }
 
 
@@ -107,35 +97,47 @@ body {
    🔎 SEARCH ROW
 ========================= */
 .row {
-  display: flex;
-  gap: 8px;
+    display: flex;
+    gap: 8px;
 }
 
+/* input grows to fill space */
 input {
-  flex: 1;
+    flex: 1;
 }
 
 
 /* =========================
-   📱 MOBILE RESPONSIVE
+   📦 OPTIONAL PADDING FIX
+========================= */
+.padded .window-body {
+    padding-left: 10px;
+}
+
+
+/* =========================
+   📱 RESPONSIVE DESIGN
 ========================= */
 @media (max-width: 600px) {
 
-  /* stack grid naturally */
-  .desktop {
-    grid-template-columns: 1fr;
-  }
+    /* stack desktop windows vertically */
+    .desktop {
+        grid-template-columns: 1fr;
+    }
 
-  .window-body.top h1 {
-    font-size: 1.2rem;
-    white-space: normal;
-  }
+    /* allow header text to wrap on small screens */
+    .window-body.top h1 {
+        font-size: 1.2rem;
+        white-space: normal;
+    }
 
-  .desktop > .cell:not(.h) > .window {
-    max-width: 100%;
-  }
+    /* better touch spacing */
+    .padded .window-body {
+        padding: 12px;
+    }
 
-  .top-window {
-    max-width: 95vw;
-  }
+    /* top window adapts to screen */
+    .top-window {
+        max-width: 95vw;
+    }
 }
