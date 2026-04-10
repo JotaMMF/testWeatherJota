@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Clima Desktop</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <link rel="stylesheet" href="styles/weatherstyle.css">
@@ -11,16 +12,25 @@
 
 <body>
 
+    <!--
+        🌦 ROOT NOTE:
+        JS will dynamically apply:
+        theme-sunny / theme-rain / theme-cloud / theme-storm
+        to ALL .window elements below
+    -->
+
     <div class="desktop">
 
-        <!-- TOP BAR -------------------------------->
+        <!-- =====================================================
+             🏷 TOP WINDOW (WELCOME HEADER)
+        ===================================================== -->
         <div class="cell h win7 wide">
 
-            <div class="window glass active top-window">
+            <div class="window glass active top-window theme-cloud">
 
                 <div class="title-bar">
                     <div class="title-bar-text">
-                        Jota's Weather Page!!
+                        Mike's Weather Page!!
                     </div>
 
                     <div class="title-bar-controls">
@@ -30,59 +40,81 @@
                     </div>
                 </div>
 
-                <div class="window-body has-space top">
+                <div class="window-body top">
                     <h1>WELCOME TO THE WEATHER PAGE!!!</h1>
                 </div>
 
             </div>
-
         </div>
 
-        <!-- CENTERED GROUP -->
-<div class="center-group">
 
-    <!-- SEARCH BAR WINDOW -->
-    <div class="window active">
-        <div class="title-bar">
-            <div class="title-bar-text">Buscar ubicación</div>
-        </div>
-        <div class="window-body">
-            <div class="row">
-                <input id="cityInput" type="text" placeholder="Ej: Amsterdam, Madrid, Paris">
-                <button id="searchBtn">Buscar</button>
+        <!-- =====================================================
+             🔎 SEARCH WINDOW
+        ===================================================== -->
+        <div class="window active search theme-cloud">
+
+            <div class="title-bar">
+                <div class="title-bar-text">Buscar ubicación</div>
             </div>
+
+            <div class="window-body">
+                <div class="row">
+                    <input id="cityInput" type="text" placeholder="Ej: Amsterdam, Madrid, Paris">
+                    <button id="searchBtn">Buscar</button>
+                </div>
+            </div>
+
         </div>
-    </div>
 
-    <!-- CURRENT WEATHER -->
-    <div class="window active padded">
-        <div class="title-bar">
-            <div class="title-bar-text">Clima actual</div>
+
+        <!-- =====================================================
+             🎯 CENTER GROUP
+        ===================================================== -->
+        <div class="center-group">
+
+            <!-- 🌡 CURRENT WEATHER -->
+            <div class="window active padded current theme-cloud">
+
+                <div class="title-bar">
+                    <div class="title-bar-text">Clima actual</div>
+                </div>
+
+                <div class="window-body" id="current"></div>
+
+            </div>
+
+
+            <!-- 📊 DETAILS -->
+            <div class="window active padded details theme-cloud">
+
+                <div class="title-bar">
+                    <div class="title-bar-text">Detalles</div>
+                </div>
+
+                <div class="window-body" id="details"></div>
+
+            </div>
+
         </div>
-        <div class="window-body" id="current"></div>
-    </div>
 
-    <!-- DETAILS -->
-    <div class="window active padded">
-        <div class="title-bar">
-            <div class="title-bar-text">Detalles</div>
-        </div>
-        <div class="window-body" id="details"></div>
-    </div>
 
-</div>
+        <!-- =====================================================
+             📅 FORECAST
+        ===================================================== -->
+        <div class="window active wide forecast theme-cloud">
 
-        <!-- FORECAST -->
-        <div class="window active wide">
             <div class="title-bar">
                 <div class="title-bar-text">Pronóstico</div>
             </div>
+
             <div class="window-body" id="forecast"></div>
+
         </div>
 
     </div>
 
     <script src="scripts/weatherscript.js"></script>
+
 </body>
 
 </html>

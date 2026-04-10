@@ -1,19 +1,73 @@
-/* =========================
+/* =========================================================
    🌍 GLOBAL BASE STYLES
-========================= */
+   - Background + typography base
+========================================================= */
 body {
     margin: 0;
-    background: #008080;
-    /* classic Windows 7 teal desktop */
     background: url("../img/materialdic1.jpg") no-repeat center center fixed;
     background-size: cover;
     font-family: sans-serif;
+
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   🌦 WEATHER THEMES (PROPER 7.CSS VARIABLE USAGE)
+   - Applied via .window classes
+   - Direct control of --w7-w-bg
+========================================================= */
+
+/* ☀ SUNNY */
+.window.theme-sunny {
+    --w7-w-bg: #ffd27d;
+}
+
+/* 🌧 RAIN */
+.window.theme-rain {
+    --w7-w-bg: #8fb3ff;
+}
+
+/* ☁ CLOUD */
+.window.theme-cloud {
+    --w7-w-bg: #d6d6d6;
+}
+
+/* ⛈ STORM */
+.window.theme-storm {
+    --w7-w-bg: #b09cff;
+}
+
+.window {
+    transition: --w7-w-bg 0.5s ease;
+}
+
+/* =========================================================
+   🔠 TYPOGRAPHY
+   - Global text sizing rules
+========================================================= */
+.title-bar-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.window-body {
+    font-size: 1rem;
+}
+
+.window-body h1 {
+    font-size: 1.8rem;
+}
+
+.forecast-card h3 {
+    font-size: 1rem;
 }
 
 
-/* =========================
-   🖥 DESKTOP GRID LAYOUT
-========================= */
+/* =========================================================
+   🖥 DESKTOP LAYOUT GRID
+   - Main app structure
+========================================================= */
 .desktop {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -21,15 +75,16 @@ body {
     padding: 12px;
 }
 
-/* full-width grid element */
+/* full-width elements */
 .wide {
     grid-column: 1 / -1;
 }
 
 
-/* =========================
-   🪟 TOP BAR (CENTERED)
-========================= */
+/* =========================================================
+   🪟 TOP WINDOW (WELCOME HEADER)
+   - Centered header window
+========================================================= */
 .cell.h {
     display: flex;
     justify-content: center;
@@ -48,65 +103,161 @@ body {
 
 .window-body.top h1 {
     margin: 0;
-    font-size: 1.6rem;
-    white-space: nowrap;
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 
 
-/* =========================
-   🎯 CENTERED WINDOW GROUP
-========================= */
-.center-group {
-    grid-column: 1 / -1; /* span full width */
+/* =========================================================
+   🔎 SEARCH WINDOW (UBICACIÓN)
+   - Centered compact input window
+========================================================= */
+.window.search {
+    grid-column: 1 / -1;
+    justify-self: center;
 
-    display: flex;
+    width: fit-content;
+    min-width: 320px;
+    max-width: 90vw;
+
+    background: #f0f7ff;
+}
+
+.window.search .window-body {
+    min-height: auto;
+    padding: 10px;
+}
+
+
+/* =========================================================
+   🎯 CENTER GROUP
+   - Clima Actual + Detalles side-by-side
+========================================================= */
+.center-group {
+    grid-column: 1 / -1;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(260px, 320px));
     justify-content: center;
     gap: 12px;
-    flex-wrap: wrap; /* allows wrapping on smaller screens */
-}
-
-/* individual window sizing inside group */
-.center-group .window {
-    width: 300px;
-    max-width: 100%;
 }
 
 
-/* =========================
-   📅 FORECAST GRID
-========================= */
+/* =========================================================
+   🎨 WINDOW VARIANTS
+   - Visual differentiation between panels
+========================================================= */
+.window.current {
+    background: #f6fff0;
+}
+
+.window.details {
+    background: #fffaf0;
+}
+
+.window.forecast {
+    grid-column: 1 / -1;
+    justify-self: center;
+
+    width: fit-content;
+    max-width: 95vw;
+}
+
+
+/* =========================================================
+   🌡 CLIMA ACTUAL (MAIN WEATHER CARD)
+   - Centered content + improved spacing
+========================================================= */
+.window.current .window-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    gap: 6px;
+
+    min-height: 160px;
+    padding: 8px 10px;
+
+    /* FIX: prevent long words from breaking layout */
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   📊 DETALLES WINDOW (CENTERED CONTENT)
+   - Horizontal + vertical centering
+========================================================= */
+.window.details .window-body {
+    min-height: 160px;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+    gap: 6px;
+
+    /* FIX: ensures long values don’t overflow */
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   📅 FORECAST LAYOUT (HORIZONTAL WRAP)
+   - Flexible row-based card system
+========================================================= */
 #forecast {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
+    align-items: flex-start;
 }
 
+
+/* =========================================================
+   📅 FORECAST CARD
+   - Auto-sizing cards with safe text wrapping
+========================================================= */
 .forecast-card {
+    display: inline-block;
+    width: fit-content;
+    max-width: 260px;
+
     border: 1px solid #c0c0c0;
     padding: 10px;
     background: #f8f8f8;
 
     box-shadow: inset 1px 1px 0 #ffffff;
+    border-radius: 6px;
+
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
 }
 
 .forecast-card h3 {
     margin: 0 0 8px 0;
-    font-size: 14px;
 }
 
 
-/* =========================
-   🪟 WINDOW BODY FIXES
-========================= */
+/* =========================================================
+   🪟 GENERIC WINDOW BODY
+   - Base padding and layout safety
+========================================================= */
 .window-body {
-    min-height: 120px;
+    min-height: auto;
     box-sizing: border-box;
 }
 
 
-/* =========================
-   🔎 SEARCH ROW
-========================= */
+/* =========================================================
+   🔎 FORM CONTROLS
+   - Input row styling
+========================================================= */
 .row {
     display: flex;
     gap: 8px;
@@ -116,27 +267,49 @@ input {
     flex: 1;
 }
 
+button,
+input {
+    padding: 8px;
+}
 
-/* =========================
-   📦 OPTIONAL PADDING FIX
-========================= */
+
+/* =========================================================
+   📦 PADDING FIXES
+========================================================= */
 .padded .window-body {
     padding-left: 10px;
 }
 
+.window-body p {
+    margin: 6px 0;
+}
 
-/* =========================
+
+/* =========================================================
    📱 RESPONSIVE DESIGN
-========================= */
+========================================================= */
 @media (max-width: 600px) {
 
     .desktop {
         grid-template-columns: 1fr;
     }
 
+    body {
+        font-size: 18px;
+    }
+
+    .window-body {
+        font-size: 1.05rem;
+    }
+
+    button,
+    input {
+        padding: 10px;
+        font-size: 1rem;
+    }
+
     .window-body.top h1 {
         font-size: 1.2rem;
-        white-space: normal;
     }
 
     .padded .window-body {
@@ -147,9 +320,7 @@ input {
         max-width: 95vw;
     }
 
-    /* stack centered group vertically */
     .center-group {
-        flex-direction: column;
-        align-items: stretch;
+        grid-template-columns: 1fr;
     }
 }

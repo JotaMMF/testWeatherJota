@@ -1,46 +1,110 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // =========================
-    // 🔗 DOM ELEMENTS
-    // =========================
-    const cityInput = document.getElementById("cityInput");
-    const searchBtn = document.getElementById("searchBtn");
+    /* =====================================================
+       🔗 DOM REFERENCES
+    ===================================================== */
+    const DOM = {
+        cityInput: document.getElementById("cityInput"),
+        searchBtn: document.getElementById("searchBtn"),
+        current: document.getElementById("current"),
+        details: document.getElementById("details"),
+        forecast: document.getElementById("forecast")
+    };
 
 
-    // =========================
-    // 🎨 WEATHER ICON MAPPING
-    // (Font Awesome helper)
-    // =========================
-    function getWeatherIcon(text) {
+    /* =====================================================
+       🎨 ICON MAPPING
+    ===================================================== */
+    function getWeatherIcon(text = "") {
         const t = text.toLowerCase();
 
-        if (t.includes("sun") || t.includes("clear")) return "fa-sun";
-        if (t.includes("partly")) return "fa-cloud-sun";
-        if (t.includes("cloud")) return "fa-cloud";
-        if (t.includes("rain") || t.includes("drizzle")) return "fa-cloud-rain";
-        if (t.includes("thunder")) return "fa-bolt";
-        if (t.includes("snow")) return "fa-snowflake";
-        if (t.includes("fog") || t.includes("mist")) return "fa-smog";
+        if (t.includes("sol") || t.includes("despejado") || t.includes("clear"))
+            return "fa-sun";
+
+        if (t.includes("parcial"))
+            return "fa-cloud-sun";
+
+        if (
+            t.includes("nube") ||
+            t.includes("nublado") ||
+            t.includes("cubierto") ||
+            t.includes("overcast") ||
+            t.includes("cloud")
+        ) return "fa-cloud";
+
+        if (t.includes("lluvia") || t.includes("llovizna") || t.includes("rain"))
+            return "fa-cloud-rain";
+
+        if (t.includes("tormenta") || t.includes("storm"))
+            return "fa-bolt";
+
+        if (t.includes("nieve"))
+            return "fa-snowflake";
+
+        if (t.includes("niebla") || t.includes("neblina"))
+            return "fa-smog";
 
         return "fa-question";
     }
 
 
-    // =========================
-    // 📅 DATE FORMATTING
-    // Adds "Hoy / Mañana" labels
-    // =========================
+    /* =====================================================
+       🌦 WEATHER THEME SYSTEM (FIXED + EXPANDED)
+       - FIX: handles Argentina / wttr.in variations
+    ===================================================== */
+    function getWeatherTheme(text = "") {
+        const t = text.toLowerCase();
+
+        /* 🌧 Rain */
+        if (
+            t.includes("lluvia") ||
+            t.includes("rain") ||
+            t.includes("llovizna")
+        ) return "theme-rain";
+
+        /* ⛈ Storm */
+        if (
+            t.includes("tormenta") ||
+            t.includes("storm") ||
+            t.includes("thunder")
+        ) return "theme-storm";
+
+        /* ☁ Cloud */
+        if (
+            t.includes("nube") ||
+            t.includes("nublado") ||
+            t.includes("cubierto") ||
+            t.includes("overcast") ||
+            t.includes("cloud") ||
+            t.includes("parcial")
+        ) return "theme-cloud";
+
+        /* ☀ SUNNY (FIXED — THIS WAS YOUR BUG) */
+        if (
+            t.includes("sol") ||
+            t.includes("despejado") ||
+            t.includes("clear") ||
+            t.includes("cielo claro") ||
+            t.includes("sunny")
+        ) return "theme-sunny";
+
+        /* fallback */
+        return "theme-cloud";
+    }
+
+
+    /* =====================================================
+       📅 DATE FORMATTER
+    ===================================================== */
     function formatDateLabel(dateString, index) {
         const date = new Date(dateString);
 
-        // Convert to dd-mm-yy (Spanish format)
         const formatted = date.toLocaleDateString("es-ES", {
             day: "2-digit",
             month: "2-digit",
             year: "2-digit"
         });
 
-        // Human-friendly labels
         if (index === 0) return `📍 Hoy (${formatted})`;
         if (index === 1) return `⏭ Mañana (${formatted})`;
 
@@ -48,128 +112,155 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // =========================
-    // 🌦 LOAD WEATHER DATA
-    // Uses wttr.in JSON API
-    // =========================
+    /* =====================================================
+       🌍 DESCRIPTION HELPER
+    ===================================================== */
+    function getDescription(obj) {
+        return obj?.lang_es?.[0]?.value ||
+               obj?.weatherDesc?.[0]?.value ||
+               "";
+    }
+
+
+    /* =====================================================
+       🧱 RENDER FUNCTIONS
+    ===================================================== */
+    function renderCurrent(city, current) {
+        const desc = getDescription(current);
+
+        DOM.current.innerHTML = `
+            <h2>Tiempo en ${city}</h2>
+
+            <p>
+                <i class="fa-solid ${getWeatherIcon(desc)}"></i>
+                ${desc}
+            </p>
+
+            <p>🌡 Temperatura: ${current.temp_C}°C</p>
+        `;
+    }
+
+
+    function renderDetails(current) {
+        DOM.details.innerHTML = `
+            <p>💨 Viento: ${current.windspeedKmph} km/h</p>
+            <p>💧 Humedad: ${current.humidity}%</p>
+            <p>📈 Presión: ${current.pressure} mb</p>
+            <p>👁 Visibilidad: ${current.visibility} km</p>
+        `;
+    }
+
+
+    function renderForecast(days) {
+
+        const html = days.map((day, index) => {
+
+            const morning = day.hourly.find(h => h.time === "900") || day.hourly[3];
+            const evening = day.hourly.find(h => h.time === "1800") || day.hourly[6];
+
+            const morningDesc = getDescription(morning);
+            const eveningDesc = getDescription(evening);
+
+            return `
+                <div class="forecast-card">
+
+                    <h3>${formatDateLabel(day.date, index)}</h3>
+
+                    <p>🌡 Máx: ${day.maxtempC}°C</p>
+                    <p>🌡 Mín: ${day.mintempC}°C</p>
+                    <p>🌤 Media: ${day.avgtempC}°C</p>
+
+                    <hr>
+
+                    <p>
+                        <i class="fa-solid ${getWeatherIcon(morningDesc)}"></i>
+                        🌅 Mañana: ${morningDesc}
+                    </p>
+
+                    <p>
+                        <i class="fa-solid ${getWeatherIcon(eveningDesc)}"></i>
+                        🌇 Tarde: ${eveningDesc}
+                    </p>
+
+                </div>
+            `;
+        }).join("");
+
+        DOM.forecast.innerHTML = html;
+    }
+
+
+    /* =====================================================
+       🌐 LOAD WEATHER
+    ===================================================== */
     async function loadWeather(city) {
         try {
+            const res = await fetch(`https://wttr.in/${city}?format=j1&lang=es`);
 
-            // 🌐 Fetch weather data
-            const res = await fetch(`https://wttr.in/${city}?format=j1`);
+            if (!res.ok) throw new Error("API error");
+
             const data = await res.json();
+            const current = data.current_condition?.[0];
 
-            const current = data.current_condition[0];
+            if (!current) throw new Error("No weather data");
 
-            // =========================
-            // 🌡 CURRENT WEATHER WINDOW
-            // =========================
-            document.getElementById("current").innerHTML = `
-        <h2>${city}</h2>
+            const weatherText = current.weatherDesc?.[0]?.value || "";
 
-        <p>
-          <i class="fa-solid ${getWeatherIcon(current.weatherDesc[0].value)}"></i>
-          ${current.weatherDesc[0].value}
-        </p>
+            /* =================================================
+               🎨 APPLY THEME (FIXED)
+            ================================================= */
+            const theme = getWeatherTheme(weatherText);
 
-        <p>🌡 Temperatura: ${current.temp_C}°C</p>
-      `;
+            document.querySelectorAll(
+                ".window.current, .window.details, .window.forecast, .top-window, .window.search"
+            ).forEach(el => {
 
+                el.classList.remove(
+                    "theme-sunny",
+                    "theme-rain",
+                    "theme-cloud",
+                    "theme-storm"
+                );
 
-            // =========================
-            // 📊 DETAILS WINDOW
-            // =========================
-            document.getElementById("details").innerHTML = `
-        <p>💨 Viento: ${current.windspeedKmph} km/h</p>
-        <p>💧 Humedad: ${current.humidity}%</p>
-        <p>📈 Presión: ${current.pressure} mb</p>
-        <p>👁 Visibilidad: ${current.visibility} km</p>
-      `;
-
-
-            // =========================
-            // 📅 FORECAST WINDOW
-            // =========================
-            let html = "";
-
-            data.weather.forEach((day, index) => {
-
-                // ⏰ Try to find morning & evening slots safely
-                const morning =
-                    day.hourly.find(h => h.time === "900") || day.hourly[3];
-
-                const evening =
-                    day.hourly.find(h => h.time === "1800") || day.hourly[6];
-
-                html += `
-          <div class="forecast-card">
-
-            <h3>${formatDateLabel(day.date, index)}</h3>
-
-            <p>🌡 Máx: ${day.maxtempC}°C</p>
-            <p>🌡 Mín: ${day.mintempC}°C</p>
-            <p>🌤 Media: ${day.avgtempC}°C</p>
-
-            <hr>
-
-            <p>
-              <i class="fa-solid ${getWeatherIcon(morning.weatherDesc[0].value)}"></i>
-              🌅 Mañana: ${morning.weatherDesc[0].value}
-            </p>
-
-            <p>
-              <i class="fa-solid ${getWeatherIcon(evening.weatherDesc[0].value)}"></i>
-              🌇 Tarde: ${evening.weatherDesc[0].value}
-            </p>
-
-            <p>💨 Viento máx: ${day.maxwindspeedKmph} km/h</p>
-
-          </div>
-        `;
+                el.classList.add(theme);
             });
 
-            document.getElementById("forecast").innerHTML = html;
+            renderCurrent(city, current);
+            renderDetails(current);
+            renderForecast(data.weather);
 
+        } catch (error) {
 
-        } catch (err) {
+            console.error("Weather error:", error);
 
-            // =========================
-            // ❌ ERROR HANDLING
-            // =========================
-            console.error(err);
+            DOM.current.innerHTML = `
+                <p>❌ Error al cargar el clima</p>
+            `;
 
-            document.getElementById("current").innerHTML = `
-        <p>❌ Error al cargar el clima</p>
-        <p>Verifica el nombre de la ciudad</p>
-      `;
-
-            document.getElementById("details").innerHTML = "";
-            document.getElementById("forecast").innerHTML = "";
+            DOM.details.innerHTML = "";
+            DOM.forecast.innerHTML = "";
         }
     }
 
 
-    // =========================
-    // 🔎 SEARCH EVENTS
-    // =========================
-
-    // Click search button
-    searchBtn.addEventListener("click", () => {
-        const city = cityInput.value.trim() || "Madrid";
+    /* =====================================================
+       🔎 EVENTS
+    ===================================================== */
+    function handleSearch() {
+        const city = DOM.cityInput.value.trim() || "Madrid";
         loadWeather(city);
+    }
+
+    DOM.searchBtn.addEventListener("click", handleSearch);
+
+    DOM.cityInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") handleSearch();
     });
 
-    // Press Enter to search
-    cityInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-            searchBtn.click();
-        }
-    });
 
-
-    // =========================
-    // 🚀 INITIAL LOAD
-    // =========================
+    /* =====================================================
+       🚀 INIT
+    ===================================================== */
     loadWeather("Madrid");
 
 });
