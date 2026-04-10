@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Clima Desktop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/7.css">
+    <link rel="stylesheet" href="styles/weatherstyle.css">
+</head>
+
+<body>
+
+    <div class="desktop">
+
+        <!-- TOP BAR -------------------------------->
+        <div class="cell h win7 wide">
+
+            <div class="window glass active top-window">
+
+                <div class="title-bar">
+                    <div class="title-bar-text">
+                        Jota's Weather Page!!
+                    </div>
+
+                    <div class="title-bar-controls">
+                        <button aria-label="Minimize"></button>
+                        <button aria-label="Maximize"></button>
+                        <button aria-label="Close"></button>
+                    </div>
+                </div>
+
+                <div class="window-body has-space top">
+                    <h1>WELCOME TO THE WEATHER PAGE!!!</h1>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- SEARCH BAR WINDOW -->
+        <div class="window active">
+            <div class="title-bar">
+                <div class="title-bar-text">Buscar ubicación</div>
+            </div>
+
+            <div class="window-body">
+                <div class="row">
+                    <input id="cityInput" type="text" placeholder="Ej: Amsterdam, Madrid, Paris">
+                    <button id="searchBtn">Buscar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CURRENT WEATHER -->
+        <div class="window active padded">
+            <div class="title-bar">
+                <div class="title-bar-text">Clima actual</div>
+            </div>
+            <div class="window-body" id="current"></div>
+        </div>
+
+        <!-- DETAILS -->
+        <div class="window active padded">
+            <div class="title-bar">
+                <div class="title-bar-text">Detalles</div>
+            </div>
+            <div class="window-body" id="details"></div>
+        </div>
+
+        <!-- FORECAST -->
+        <div class="window active wide">
+            <div class="title-bar">
+                <div class="title-bar-text">Pronóstico</div>
+            </div>
+            <div class="window-body" id="forecast"></div>
+        </div>
+
+    </div>
+
+    <script src="scripts/weatherscript.js"></script>
+</body>
+
+</html>
