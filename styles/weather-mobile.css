@@ -1,0 +1,87 @@
+/* =========================================================
+   📱 MOBILE OVERRIDES (MAX 768px)
+   This file ONLY changes layout for small screens.
+   Base styles remain in weatherstyle.css
+========================================================= */
+
+@media (max-width: 768px) {
+
+    /* =====================================================
+       🧱 MAIN GRID → STACK EVERYTHING VERTICALLY
+       On desktop: multi-column grid
+       On mobile: single column for readability
+    ===================================================== */
+    .desktop {
+        grid-template-columns: 1fr;
+        padding: 10px; /* reduces excessive spacing on small screens */
+    }
+
+    /* =====================================================
+       🎯 CENTER GROUP → STACK CARDS
+       Desktop shows 2 columns (current + details)
+       Mobile forces 1 column for better fit
+    ===================================================== */
+    .center-group {
+        grid-template-columns: 1fr;
+    }
+
+    /* =====================================================
+       🪟 WINDOWS → FULL WIDTH
+       Ensures no "floating boxes" or small fixed-width panels
+       Everything stretches to screen width
+    ===================================================== */
+    .window,
+    .window.search,
+    .window.current,
+    .window.details,
+    .window.forecast {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* =====================================================
+       🔎 SEARCH WINDOW FIX
+       Removes min-width so it doesn't overflow small screens
+    ===================================================== */
+    .window.search {
+        min-width: unset;
+    }
+
+    /* =====================================================
+       ✍️ GLOBAL TEXT SCALING
+       Slightly larger base font for readability on phones
+    ===================================================== */
+    body {
+        font-size: 18px;
+    }
+
+    /* =====================================================
+       ⌨️ INPUTS + BUTTONS → TOUCH FRIENDLY
+       Increases size so buttons are easier to tap
+    ===================================================== */
+    input,
+    button {
+        font-size: 1.1rem;
+        padding: 12px;
+    }
+
+    /* =====================================================
+       📊 FORECAST CARDS → FULL WIDTH STACK
+       Desktop: multiple small cards in rows
+       Mobile: stacked cards (like a list)
+    ===================================================== */
+    .forecast-card {
+        width: 100%;
+        max-width: 100%;
+        font-size: 1.1rem;
+        padding: 14px;
+    }
+
+    /* =====================================================
+       🏠 HEADER TITLE → SCALE DOWN
+       Prevents huge headings from dominating mobile screens
+    ===================================================== */
+    .window-body.top h1 {
+        font-size: 1.6rem;
+    }
+}
