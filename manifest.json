@@ -1,0 +1,23 @@
+{
+  "name": "Clima Desktop",
+  "short_name": "Clima",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#008080",
+  "theme_color": "#008080",
+  "description": "Weather app with Windows-style UI",
+  "icons": [
+  {
+    "src": "icon/favicon-180x180.png",
+    "sizes": "180x180",
+    "type": "image/png",
+    "purpose": "any maskable"
+  },
+  {
+    "src": "icon/favicon-256x256.png",
+    "sizes": "256x256",
+    "type": "image/png",
+    "purpose": "any maskable"
+  }
+]
+}
