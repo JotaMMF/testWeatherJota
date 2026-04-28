@@ -13,7 +13,8 @@
     ===================================================== */
     .desktop {
         grid-template-columns: 1fr;
-        padding: 10px; /* reduces excessive spacing on small screens */
+        padding: 10px;
+        /* reduces excessive spacing on small screens */
     }
 
     /* =====================================================
@@ -53,6 +54,12 @@
     ===================================================== */
     body {
         font-size: 18px;
+
+        background-image: url("../img/bg-mobile.webp");
+        background-attachment: scroll;
+        /* important for performance */
+        background-size: cover;
+        background-position: center top;
     }
 
     /* =====================================================

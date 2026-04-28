@@ -3,14 +3,16 @@
 ========================================================= */
 body {
     margin: 0;
-    background: url("../img/materialdic1.jpg") no-repeat center center fixed;
-    background-size: cover;
-
     font-family: sans-serif;
+
+    background: no-repeat center center;
+    background-size: cover;
 
     font-size: clamp(16px, 2.2vw, 20px);
     line-height: 1.6;
 }
+
+
 
 /* =========================================================
    🌦 WEATHER THEMES
@@ -234,4 +236,12 @@ input {
 
 .window-body p {
     margin: 6px 0;
+}
+
+/* Desktop background */
+@media (min-width: 769px) {
+    body {
+        background-image: url("../img/bg-desktop.webp");
+        background-attachment: fixed; /* optional */
+    }
 }

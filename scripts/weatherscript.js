@@ -53,42 +53,42 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
 
     function getWeatherIcon(text = "") {
-        const t = normalizeText(text);
+    const t = normalizeText(text);
 
-        if (t.includes("sol") || t.includes("despejado") || t.includes("clear"))
-            return "fa-sun";
+    if (t.includes("sol") || t.includes("despejado") || t.includes("clear"))
+        return "☀️";
 
-        if (t.includes("parcial"))
-            return "fa-cloud-sun";
+    if (t.includes("parcial"))
+        return "🌤";
 
-        if (
-            t.includes("nube") ||
-            t.includes("nublado") ||
-            t.includes("cubierto") ||
-            t.includes("overcast") ||
-            t.includes("cloud")
-        ) return "fa-cloud";
+    if (
+        t.includes("nube") ||
+        t.includes("nublado") ||
+        t.includes("cubierto") ||
+        t.includes("overcast") ||
+        t.includes("cloud")
+    ) return "☁️";
 
-        if (
-            t.includes("lluvia") ||
-            t.includes("llovizna") ||
-            t.includes("precipitaciones") ||
-            t.includes("light rain") ||
-            t.includes("drizzle") ||
-            t.includes("rain")
-        ) return "fa-cloud-rain";
+    if (
+        t.includes("lluvia") ||
+        t.includes("llovizna") ||
+        t.includes("precipitaciones") ||
+        t.includes("light rain") ||
+        t.includes("drizzle") ||
+        t.includes("rain")
+    ) return "🌧";
 
-        if (t.includes("tormenta") || t.includes("storm"))
-            return "fa-bolt";
+    if (t.includes("tormenta") || t.includes("storm"))
+        return "⛈";
 
-        if (t.includes("nieve"))
-            return "fa-snowflake";
+    if (t.includes("nieve"))
+        return "❄️";
 
-        if (t.includes("niebla") || t.includes("neblina"))
-            return "fa-smog";
+    if (t.includes("niebla") || t.includes("neblina"))
+        return "🌫";
 
-        return "fa-question";
-    }
+    return "❓";
+}
 
 
     function getWeatherTheme(text = "") {
@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         DOM.current.innerHTML = `
             <h2>Tiempo en ${city}</h2>
-            <p><i class="fa-solid ${getWeatherIcon(desc)}"></i> ${desc}</p>
+            <p>${getWeatherIcon(desc)} ${desc}</p>
             <p>🌡 Temperatura: ${current.temp_C}°C</p>
         `;
     }
@@ -180,12 +180,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     <hr>
 
                     <p>
-                        <i class="fa-solid ${getWeatherIcon(morningDesc)}"></i>
+                        ${getWeatherIcon(morningDesc)}
                         🌅 Mañana: ${morningDesc}
                     </p>
 
                     <p>
-                        <i class="fa-solid ${getWeatherIcon(eveningDesc)}"></i>
+                        ${getWeatherIcon(eveningDesc)}
                         🌇 Tarde: ${eveningDesc}
                     </p>
                 </div>
